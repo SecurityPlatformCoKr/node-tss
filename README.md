@@ -26,11 +26,10 @@ Requirements
 Compilation
 -------------
 
-Using node-waf.  Two steps:
+Using node-gyp:
 
 <pre>
-$ node-waf configure
-$ node-waf
+$ node-gyp rebuild
 </prE>
 
 You will get the following warning: 

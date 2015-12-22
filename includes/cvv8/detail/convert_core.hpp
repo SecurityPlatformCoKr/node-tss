@@ -603,8 +603,8 @@ namespace cvv8 {
         ResultType operator()( v8::Handle<v8::Value> const & h ) const
         {
             typedef JSToNative<JST &> Cast;
-            typedef typename Cast::ResultType NH;
 #if 0
+            typedef typename Cast::ResultType NH;
             NH n = Cast()( h );
             if( ! n )
             {

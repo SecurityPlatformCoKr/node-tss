@@ -34,12 +34,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <memory.h>
+#include <arpa/inet.h>
 #include <openssl/pem.h>
 #include <openssl/x509.h>
 #include <openssl/sha.h>
 #include <openssl/rsa.h>
 
 #include <trousers/tss.h>
+#include <trousers/trousers.h>
 #include <tss/tss_defines.h>
 
 
@@ -78,7 +80,7 @@ TSS_RESULT quote(char* srkPwd, char* aikfile, long pcrs[], int npcrs,BYTE nonce[
 
 /* nonce is 20 in length */
 
-TSS_RESULT createQuote(long pcrs[], int npcrs, BYTE nonce[], TSS_HCONTEXT context, TSS_HTPM	tpm, TSS_HKEY srk, TSS_HKEY	aik, TSS_VALIDATION* valid, TPM_QUOTE_INFO* quoteInfo);
+TSS_RESULT createQuote(long pcrs[], UINT32 npcrs, BYTE nonce[], TSS_HCONTEXT context, TSS_HTPM	tpm, TSS_HKEY srk, TSS_HKEY	aik, TSS_VALIDATION* valid, TPM_QUOTE_INFO* quoteInfo);
 
 
 

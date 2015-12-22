@@ -713,6 +713,7 @@ namespace cvv8 {
                                             Argv_False,
                                             Head>::Type Ftor;
             typedef typename PredList::Tail Tail;
+			#if 0
             typedef char AssertEndOfListCheck[ tmp::SameType<tmp::NilType,Head>::Value
                                         ? (tmp::SameType<tmp::NilType,Tail>::Value ? 1 : -1)
                                         : 1
@@ -720,6 +721,7 @@ namespace cvv8 {
                                            any specialization other than the NilType one.
                                         */
                                         ];
+			#endif
             return ( Ftor()( argv ) )
                 ? Detail::OverloadCallHelper<Head>::Call( argv )
                 : PredicatedInCaDispatcher<Tail>::Call(argv);

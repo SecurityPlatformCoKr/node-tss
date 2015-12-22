@@ -163,7 +163,7 @@ namespace cvv8 {
         /** Implements the v8::AccessorGetter() interface. */
         inline static v8::Handle<v8::Value> Get(v8::Local<v8::String> property, const v8::AccessorInfo &info)
         {
-            typedef typename TypeInfo<T>::Type Type;
+            //typedef typename TypeInfo<T>::Type Type;
             typedef typename JSToNative<T>::ResultType NativeHandle;
             NativeHandle self = CastFromJS<T>( info.This() );
             return ( ! self )
@@ -191,7 +191,7 @@ namespace cvv8 {
         /** Implements the v8::AccessorSetter() interface. */
         inline static void Set(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::AccessorInfo& info)
         {
-            typedef typename TypeInfo<T>::Type Type;
+            //typedef typename TypeInfo<T>::Type Type;
             typedef typename JSToNative<T>::ResultType NativeHandle;
             NativeHandle self = CastFromJS<T>( info.This() );
             if( self ) self->*MemVar = CastFromJS<PropertyType>( value );
@@ -306,7 +306,7 @@ namespace cvv8 {
     {
         inline static v8::Handle<v8::Value> Get( v8::Local< v8::String > property, const v8::AccessorInfo & info )
         {
-            typedef typename TypeInfo<T>::Type Type;
+            //typedef typename TypeInfo<T>::Type Type;
             typedef typename JSToNative<T>::ResultType NativeHandle;
             NativeHandle self = CastFromJS<T>( info.This() );
             return self
@@ -324,7 +324,7 @@ namespace cvv8 {
     {
         inline static v8::Handle<v8::Value> Get( v8::Local< v8::String > property, const v8::AccessorInfo & info )
         {
-            typedef typename TypeInfo<T>::Type Type;
+            //typedef typename TypeInfo<T>::Type Type;
             typedef typename JSToNative<T>::ResultType NativeHandle;
             NativeHandle const self = CastFromJS<T>( info.This() );
             return self
@@ -360,7 +360,7 @@ namespace cvv8 {
     {
         static void Set(v8::Local< v8::String > property, v8::Local< v8::Value > value, const v8::AccessorInfo &info)
         {
-            typedef typename TypeInfo<T>::Type Type;
+            //typedef typename TypeInfo<T>::Type Type;
             typedef typename JSToNative<T>::ResultType NativeHandle;
             NativeHandle self = CastFromJS<NativeHandle>( info.This() );
             if( ! self )
@@ -390,7 +390,7 @@ namespace cvv8 {
     {
         static void Set(v8::Local< v8::String > property, v8::Local< v8::Value > value, const v8::AccessorInfo &info)
         {
-            typedef typename TypeInfo<T>::Type Type;
+            //typedef typename TypeInfo<T>::Type Type;
             typedef typename JSToNative<T>::ResultType NativeHandle;
             NativeHandle self = CastFromJS<NativeHandle>( info.This() );
             if( ! self )

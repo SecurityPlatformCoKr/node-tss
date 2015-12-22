@@ -60,17 +60,19 @@ static Handle<Value> getPCR(const Arguments& args) {
 
 	    UINT32 pcrLen = pcrRead(pcr, &pcrRes);    
 	    
-	    if (pcrLen < 0) {
+	    if ((int)pcrLen < 0) {
 		    return ThrowException(
 				    Exception::Error(String::New("Could not read PCR")));
 	    }
 	    v8::Handle<v8::Array> rv = v8::Array::New(pcrLen);	    
-	    for (int i = 0; i < pcrLen; i++) {
+	    for (UINT32 i = 0; i < pcrLen; i++) {
 		    rv->Set( i, cv::CastToJS<BYTE>( pcrRes[i]) );
 	    }    
 	    free(pcrRes);
 	    return rv;
     }
+    return ThrowException(
+	Exception::Error(String::New("invalid argument")));
 }
 
 static Handle<Value> extendPCR(const Arguments& args) {
@@ -84,7 +86,7 @@ static Handle<Value> extendPCR(const Arguments& args) {
         
         TSS_RESULT res = pcrExtend(pcr, length, input);
         
-        if (res == -1) {
+        if (res != TSS_SUCCESS) {
             return ThrowException(
 				    Exception::Error(String::New("Could not extend PCR")));
         }
@@ -94,6 +96,8 @@ static Handle<Value> extendPCR(const Arguments& args) {
 	    
 	    return v8::Boolean::New(true);
     }
+    return ThrowException(
+	Exception::Error(String::New("invalid argument")));
 }
 
 

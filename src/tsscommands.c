@@ -72,7 +72,7 @@ TSS_RESULT getSrk(TSS_HCONTEXT context, UINT32 secretMode, char* secret,
 	result = Tspi_GetPolicyObject(*key, TSS_POLICY_USAGE, &srkPolicy);
 	if (result != 0)
 		return result;
-	return Tspi_Policy_SetSecret(srkPolicy, secretMode, secretLen, secret);
+	return Tspi_Policy_SetSecret(srkPolicy, secretMode, secretLen, (BYTE *)secret);
 }
 
 TSS_RESULT pcrExtend(UINT32 pcrNumber, UINT32 pcrDataLength, BYTE* data) 
@@ -111,7 +111,7 @@ TSS_RESULT getKeyFromFile(TSS_HCONTEXT context, TSS_HKEY srk, char* filename,
 	/* Open the key file */
 	if ((file = fopen(filename, "rb")) == NULL) {
 		fprintf(stderr, "Unable to open the file %s\n", filename);
-		return result;
+		return TSS_E_FAIL;
 	}
 	/* How long is it? */
 	fseek(file, 0, SEEK_END);
@@ -122,7 +122,8 @@ TSS_RESULT getKeyFromFile(TSS_HCONTEXT context, TSS_HKEY srk, char* filename,
 	buf = malloc(bufLen);
 	if (fread(buf, 1, bufLen, file) != bufLen) {
 		fprintf(stderr, "Unable to read file %s\n", filename);
-		return result;
+		fclose(file);
+		return TSS_E_FAIL;
 	}
 	fclose(file);
 	/* Load by blob */
@@ -184,7 +185,7 @@ TSS_RESULT createTpmKey2(TSS_HCONTEXT context, TSS_FLAG keyFlags, TSS_HKEY srk,
 
 TSS_RESULT createKey(TSS_HKEY * key) 
 {
-    
+    return TSS_E_FAIL;    
 }
 
 
@@ -233,16 +234,13 @@ TSS_RESULT quote(char* srkPwd, char* aikfile, long pcrs[], int npcrs,
 	TSS_HKEY srk;
 	TSS_HKEY aik;
 
-	UINT32 pcrResLength;
-	BYTE* pcrRes;
-
 	result = Tspi_Context_Create(&context);
 	if (result != 0)
 		return result;
 	result = connectContext(context);
 	if (result != 0)
 		return result;
-	result = getTpmTspi_Context_GetTpmObject(context, &tpm);
+	result = Tspi_Context_GetTpmObject(context, &tpm);
 	if (result != 0)
 		return result;
 	result = getSrk(context, TSS_SECRET_MODE_PLAIN, srkPwd, strlen(srkPwd),
@@ -287,7 +285,7 @@ TSS_RESULT quote(char* srkPwd, char* aikfile, long pcrs[], int npcrs,
  */
 
 /* nonce is 20 in length */
-TSS_RESULT createQuote(long pcrs[], int npcrs, BYTE nonce[],
+TSS_RESULT createQuote(long pcrs[], UINT32 npcrs, BYTE nonce[],
 		TSS_HCONTEXT context, TSS_HTPM tpm, TSS_HKEY srk, TSS_HKEY aik,
 		TSS_VALIDATION* valid, TPM_QUOTE_INFO* quoteInfo) {
 	UINT32 tpmProp;
@@ -297,8 +295,8 @@ TSS_RESULT createQuote(long pcrs[], int npcrs, BYTE nonce[],
 	BYTE *tmpbuf;
 	UINT32 tmpbufLen;
 	BYTE *buf;
-	int i;
-	UINT32 bufLen;
+	UINT32 i;
+//	UINT32 bufLen;
 	BYTE *bp;
 
 	/* Create PCR list to be quoted */
@@ -339,7 +337,9 @@ TSS_RESULT createQuote(long pcrs[], int npcrs, BYTE nonce[],
 	result = Tspi_TPM_Quote(tpm, aik, hPCRs, valid);
 	if (result != 0)
 		return result;
-	quoteInfo = (TPM_QUOTE_INFO *) (*valid).rgbData;
+	if (quoteInfo) {
+	    memcpy(quoteInfo, (*valid).rgbData, sizeof(TPM_QUOTE_INFO));
+	}
 	/* Fill in rest of PCR buffer */
 	bp = buf + 2 + npcrBytes;
 	*(UINT32 *) bp = htonl(20 * npcrs);
@@ -357,7 +357,7 @@ TSS_RESULT createQuote(long pcrs[], int npcrs, BYTE nonce[],
 				return result;
 		}
 	}
-	bufLen = bp - buf;
+//	bufLen = bp - buf;
 	Tspi_Context_FreeMemory(context, tmpbuf);
 	return result;
 }
