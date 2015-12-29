@@ -11,7 +11,8 @@ operations.
 
 
 This was originally part of the webinos project (http://webinos.org/) but was
-extracted and turned into a separate project.
+extracted and turned into a separate project. After fork, this is included
+in SecurityPlatform's distribution.
 
 
 Requirements

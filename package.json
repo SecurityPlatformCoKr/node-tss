@@ -1,12 +1,12 @@
 { 
     "name": "node-tss",
-    "version": "0.0.2",
-    "author": "John Lyle <john.lyle@cs.ox.ac.uk>",
+    "version": "0.0.3",
+    "author": "KM Kim <kkim@securityplatform.co.kr",
     "description": "nodejs interface to the Trusted Computing Group Software Stack (TSS)",
-    "homepage": "https://github.com/jplyle/node-tss",
+    "homepage": "https://github.com/SecurityPlatformCoKr/node-tss",
     "repository": { 
         "type": "git",
-        "url": "https://github.com/jplyle/node-tss.git"
+        "url": "https://github.com/SecurityPlatformCoKr/node-tss.git"
     },
     "keywords": [
         "TPM",
