@@ -53,10 +53,6 @@ TPM Keys
 -------------
 This API doesn't create keys for you, it needs you to do it.
 
-Go to http://privacyca.com/code.html and follow instructions for the 
-Privacy CA client and (if possible) the EK Certificate Extractor.
-
-
 
 TODO List / known bugs
 -------------
